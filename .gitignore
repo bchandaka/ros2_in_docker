@@ -1,7 +1,7 @@
 # ROS2
-# ./install
-# ./log
-# ./build
+./install
+./log
+./build
 .zsh_history
 # Byte-compiled / optimized / DLL files
 __pycache__/
