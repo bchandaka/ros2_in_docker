@@ -70,10 +70,10 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions tmux git colored-man-pages command-not-found)
+plugins=(git zsh-autosuggestions tmux colored-man-pages command-not-found)
 
+source $HOME/.zshrc_local
 source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -99,3 +99,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+prompt_context() {
+  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+    # prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
+  fi
+}

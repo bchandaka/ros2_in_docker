@@ -1,11 +1,12 @@
 name: humble
-root: ~/ros2_ws/
+root: ~/colcon_ws/
 startup_window: ros2
 tmux_command: tmux -2
 windows:
   - ros2:
       layout: even-horizontal
       panes:
+        - ros2 -h
         - echo "\nAvailable local packages:" && ros2 pkg list
   - monitor:
       panes:
