@@ -28,6 +28,6 @@ build:
 	colcon build --symlink-install
 	bash ./install/setup.bash
 clean:
-	rm -r cache
+	rm -r build/ install/ log/
 exit:
 	tmux kill-server
