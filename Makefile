@@ -1,6 +1,6 @@
 .PHONY : default dev build_docker docker clean_docker run build clean exit
 CONTAINER_NAME?=humble
-ROS_BAGS?=./bags
+ROS_DATA?=./data
 export CONTAINER_NAME
 export ROS_BAGS
 
@@ -26,8 +26,8 @@ run:
 # Inside the container
 build:
 	colcon build --symlink-install
-	zsh ./install/setup.zsh
+	bash ./install/setup.bash
 clean:
-	rm -r build install log
+	rm -r cache
 exit:
 	tmux kill-server

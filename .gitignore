@@ -2,7 +2,7 @@
 ./install
 ./log
 ./build
-.zsh_history
+.bash_history
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

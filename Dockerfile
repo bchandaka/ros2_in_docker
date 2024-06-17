@@ -18,16 +18,6 @@ RUN useradd -ms /bin/bash $USER_NAME && \
 
 USER $USER_NAME
 
-# Install oh-my-zsh
-RUN sudo apt-get install -y zsh
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-RUN chsh -s /usr/bin/zsh $USER_NAME
-RUN git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-COPY ./docker_settings/.zshrc /home/$USER_NAME/.zshrc
-RUN echo 'export HISTFILE=/home/$USER_NAME/colcon_ws/.zsh_history' >> /home/$USER_NAME/.zshrc_local
-RUN echo 'source /opt/ros/humble/setup.zsh 2>/dev/null || true' >> /home/$USER_NAME/.zshrc_local
-RUN echo 'source /home/$USER_NAME/colcon_ws/install/setup.zsh 2>/dev/null || true' >> /home/$USER_NAME/.zshrc_local
-
 # Install tmux & tmuxinator
 RUN sudo apt install -y tmux
 RUN mkdir $HOME/tmp && export TMPDIR=$HOME/tmp
@@ -36,9 +26,7 @@ WORKDIR /home/$USER_NAME
 RUN git clone https://github.com/gpakosz/.tmux.git
 RUN ln -s -f .tmux/.tmux.conf
 COPY ./docker_settings/.tmux.conf.local /home/$USER_NAME/
-
-# Install ROS2/Additional dependencies
-RUN sudo apt-get install -y htop
+RUN sudo chown $USER_NAME /home/$USER_NAME/.tmux.conf.local
 
 # Update dependencies with rosdep
 WORKDIR /home/$USER_NAME/colcon_ws
@@ -48,6 +36,13 @@ COPY --parents src/**/*.xml /tmp
 COPY --parents src/**/COLCON_IGNORE /tmp
 RUN cd /tmp && rosdep install -i --from-path . --rosdistro humble -y
 
+# Install ROS2/Additional dependencies
+RUN sudo apt-get install -y htop
+
+# bash settings
+COPY ./docker_settings/.bashrc /tmp/.bashrc
+RUN cat /tmp/.bashrc >> /home/$USER_NAME/.bashrc
+
 # Install Python dependencies
 RUN sudo apt-get install -y python3-pip
 COPY ./requirements.txt /tmp
@@ -56,4 +51,4 @@ RUN pip3 install -r /tmp/requirements.txt
 WORKDIR /home/$USER_NAME/colcon_ws
 USER root
 
-CMD ["/usr/bin/zsh"]
+CMD ["/usr/bin/bash"]
