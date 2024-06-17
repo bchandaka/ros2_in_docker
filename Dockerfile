@@ -48,6 +48,7 @@ RUN sudo apt-get install -y python3-pip
 COPY ./requirements.txt /tmp
 RUN pip3 install -r /tmp/requirements.txt
 
+RUN export PATH="$HOME/.local/bin:$PATH"
 WORKDIR /home/$USER_NAME/colcon_ws
 USER root
 
